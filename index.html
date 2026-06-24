@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Doom</title>
+</head>
+<body>
+
+    <div id="ui">
+        <input type="file" id="wad-loader" accept=".wad">
+        <span id="status">Awaiting WAD...</span>
+    </div>
+
+    <canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+
+    <script>
+        const status = document.getElementById('status');
+        const ui = document.getElementById('ui');
+
+        var Module = {
+            canvas: document.getElementById('canvas'),
+            arguments: [],
+            noInitialRun: true,
+            onRuntimeInitialized: function() {
+                status.innerText = "Engine ready.";
+            }
+        };
+
+        document.getElementById('wad-loader').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                try {
+                    Module.FS.writeFile('/' + file.name, new Uint8Array(event.target.result));
+                    Module.arguments = ['-iwad', file.name];
+                    ui.style.display = 'none';
+                    Module.canvas.focus();
+                    Module.callMain(Module.arguments);
+                } catch (err) {
+                    status.innerText = "Error: " + err.message;
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        });
+    </script>
+
+    <script async src="doomgeneric.js"></script>
+
+</body>
+</html>
