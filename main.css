@@ -1,9 +1,26 @@
-body {
-    font-family: sans-serif;
+html, body {
     margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #1f1f1f;
+    font-family: sans-serif;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    background-color: #1f1f1f;
-    min-height: 100vh;
-    color: #ffffff;
+}
+
+#ui {
+    padding: 10px;
+    background: #2a2a2a;
+    color: white;
+    z-index: 10;
+}
+
+#canvas {
+    flex-grow: 1;
+    width: 100vw;
+    height: 100%;
+    object-fit: contain;
+    display: block;
 }
